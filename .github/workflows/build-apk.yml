@@ -32,11 +32,12 @@ jobs:
           java-version: '17'
           cache: 'gradle'
 
-      # ပြဿနာဖြစ်စေသော Gradle 9.x ဗားရှင်းအသစ်အစား တည်ငြိမ်မှုရှိသည့် ဗားရှင်းသို့ ပြောင်းလဲခြင်း
+      # Runner ထဲရှိ မူလ wrapper ဖိုင်ထက် သတ်မှတ်ထားတဲ့ ဗားရှင်းကို ဦးစားပေးသုံးရန် override: true ထည့်ထားသည်
       - name: 🔧 Setup Gradle Version
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.10.2'
+          override-wrapper: true
 
       - name: 📱 Set up Android SDK
         uses: android-actions/setup-android@v3
@@ -59,10 +60,11 @@ jobs:
       - name: 🔑 Grant Execute Permission for Gradlew
         run: chmod +x android/gradlew
 
+      # gradlew wrapper ဖိုင်အစား စက်ထဲက သတ်မှတ်ပြီးသား gradle ဗားရှင်းအမှန်ကို တိုက်ရိုက် run ခိုင်းခြင်း
       - name: 🚀 Build Android Debug APK
         run: |
           cd android
-          ./gradlew assembleDebug --stacktrace
+          gradle assembleDebug --stacktrace
 
       - name: 📋 Prepare APK Output
         run: |
