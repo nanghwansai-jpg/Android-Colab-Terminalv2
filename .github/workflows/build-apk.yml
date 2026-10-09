@@ -40,7 +40,7 @@ jobs:
 
       - name: 📦 Install Dependencies
         run: |
-          npm ci
+          npm ci --legacy-peer-deps
           npm install -g @capacitor/cli
 
       - name: 🔨 Build Vite Web Application
