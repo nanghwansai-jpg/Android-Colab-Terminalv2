@@ -32,6 +32,12 @@ jobs:
           java-version: '17'
           cache: 'gradle'
 
+      # ပြဿနာဖြစ်စေသော Gradle 9.x ဗားရှင်းအသစ်အစား တည်ငြိမ်မှုရှိသည့် ဗားရှင်းသို့ ပြောင်းလဲခြင်း
+      - name: 🔧 Setup Gradle Version
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+
       - name: 📱 Set up Android SDK
         uses: android-actions/setup-android@v3
         with:
