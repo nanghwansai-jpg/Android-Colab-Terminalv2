@@ -1,0 +1,48 @@
+Categories:
+  - Development
+  - System
+License: Apache-2.0
+AuthorName: Victor Geek
+AuthorEmail: xhackcoder@gmail.com
+SourceCode: https://github.com/xhackcoder/colab-android-terminal
+IssueTracker: https://github.com/xhackcoder/colab-android-terminal/issues
+Changelog: https://github.com/xhackcoder/colab-android-terminal/releases
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+CurrentVersion: 2.6.0
+CurrentVersionCode: 1
+
+Name: Colab Android Terminal
+Summary: High-performance mobile terminal controller client with real-time stats and encrypted vault
+
+Description: |
+  Colab Android Terminal is an open-source, high-performance mobile terminal controller
+  engineered for developers managing cloud compute instances, Python scripts, and remote
+  servers directly from mobile devices.
+
+  Features:
+  * Interactive Bash 5.2 shell with real-time logging, command history, and auto-complete.
+  * Tactile virtual hardware keys (ESC, TAB, CTRL, ALT, Arrow keys, ^C, ^Z, ^D).
+  * Real-time hardware telemetry and 7-segment digital displays.
+  * Screen WakeLock and background keep-alive service.
+  * Hardware AES-256-GCM secure credentials storage with master PIN and instant wipe.
+  * Built-in recipes for tmate, ngrok, and Cloudflare tunnels.
+
+  Anti-Features: None. 100% Free and Open Source (FOSS), no proprietary Google Play Services,
+  no advertising SDKs, no trackers, and no external font CDN calls.
+
+RepoType: git
+Repo: https://github.com/xhackcoder/colab-android-terminal.git
+
+Builds:
+  - versionName: 2.6.0
+    versionCode: 1
+    commit: v2.6.0
+    subdir: android/app
+    gradle:
+      - yes
+    prebuild:
+      - npm install
+      - npm run build
+      - npx cap sync android

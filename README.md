@@ -93,23 +93,32 @@ npm run build
 
 #### ၃။ Android APK နှင့် Play Store AAB ထုတ်ယူခြင်း
 ```bash
-# Capacitor platform အား sync ပြုလုပ်ခြင်း
-npx cap sync android
+# Automated Single-command Build Script
+./scripts/build-android.sh
 
-# Android project directory ထဲသို့ ဝင်ရောက်ခြင်း
+# သို့မဟုတ် အဆင့်ဆင့် run ရန်:
+npm run build
+npx cap sync android
 cd android
 
-# Debug APK ထုတ်ယူခြင်း
+# F-Droid / Debug / Sideload APK ထုတ်ယူခြင်း
 ./gradlew assembleDebug
 
 # Google Play Store တင်ရန် Release AAB (Android App Bundle) ထုတ်ယူခြင်း
 ./gradlew bundleRelease
 ```
 Output ဖိုင်တည်နေရာ:
-- Debug APK: `android/app/build/outputs/apk/debug/app-debug.apk`
+- Debug / FOSS APK: `android/app/build/outputs/apk/debug/app-debug.apk`
 - Play Store AAB: `android/app/build/outputs/bundle/release/app-release.aab`
 
-#### ၄။ GitHub Actions ဖြင့် အလိုအလျောက် Build ပြုလုပ်ခြင်း
+#### ၄။ F-Droid သို့ တင်သွင်းရန် ပြင်ဆင်ချက်များ (F-Droid FOSS Compliance)
+F-Droid Anti-Features မူဝါဒများနှင့် ငြိစွန်းမှုမရှိစေရန် အောက်ပါ Google features များကို ဖယ်ရှားပြီး 100% Pure FOSS အဖြစ် ပြင်ဆင်ထားပါသည်:
+- **Google Play Services ဖယ်ရှားခြင်း:** `android/build.gradle` နှင့် `android/app/build.gradle` မှ `com.google.gms:google-services` plugin အားလုံးကို ဖယ်ရှားထားပြီး ဖြစ်ပါသည်။ (`NonFreeDep` အငြိမရှိ)
+- **Google Fonts CDN ဖယ်ရှားခြင်း:** `index.html` မှ `fonts.googleapis.com` tracking CDN calls များကို ဖယ်ရှားပြီး local font (`@fontsource/dseg7-classic`) နှင့် system fonts သာ သုံးထားပါသည်။ (`NonFreeNet` အငြိမရှိ)
+- **Zero Proprietary SDKs:** Firebase Analytics, AdMob, Google Tracking SDK များ လုံးဝ မပါဝင်ပါ။
+- **F-Droid Metadata Recipe:** `metadata/com.victorgeek.colabterminal.yml` တွင် F-Droid build server (fdroiddata) အတွက် တရားဝင် metadata recipe ကို အဆင်သင့် ထည့်သွင်းပေးထားပါသည်။
+
+#### ၅။ GitHub Actions ဖြင့် အလိုအလျောက် Build ပြုလုပ်ခြင်း
 `.github/workflows/build-apk.yml` တွင် GitHub Actions CI/CD စီစဉ်ထားပြီး ဖြစ်သောကြောင့် GitHub Repository သို့ push လုပ်လိုက်ရုံဖြင့် APK & AAB ကို Releases/Artifacts ကဏ္ဍတွင် အလိုအလျောက် Download ရယူနိုင်ပါသည်။
 
 ---
@@ -129,6 +138,25 @@ Google Play Console > **Policy > App Content** တွင် အောက်ပ�
    - Can users delete their data? -> **Yes** (In-app One-click Wipe)
 7. **Government Apps:** "No"
 8. **Financial Features:** "No financial features"
+
+---
+
+### 🚨 Play Console မှ Publish မထွက်ရသည့် အဓိက အကြောင်းရင်း (၇) ချက်နှင့် ဖြေရှင်းနည်း
+
+1. **Personal Developer Account ၏ "20 Testers for 14 Days" သတ်မှတ်ချက် (အဖြစ်အများဆုံး)**:
+   - ၂၀၂၃ နိုဝင်ဘာနောက်ပိုင်း ဖွင့်ထားသော Personal Account များသည် တိုက်ရိုက် Production မတင်နိုင်ပါ။ Closed Testing တွင် စမ်းသပ်သူ ၂၀ ဦးဖြင့် အနည်းဆုံး ၁၄ ရက် အပြည့် စမ်းသပ်ပြီးမှသာ Dashboard ပေါ်တွင် "Apply for production" ခလုတ် ပေါ်လာပါမည်။
+2. **"In review" စစ်ဆေးဆဲ ဖြစ်နေခြင်း**:
+   - အက်ပ်တင်ပြီးစ အချိန်တွင် Google မှ ရုံးဖွင့်ရက် ၃ ရက်မှ ၇ ရက် (တစ်ခါတစ်ရံ ၁၄ ရက်အထိ) စစ်ဆေးတတ်ပါသည်။ ဤအတောအတွင်း အက်ပ်အသစ် ထပ်မတင်ဘဲ စောင့်ဆိုင်းရပါမည်။
+3. **"Managed Publishing" ဖွင့်ထားမိခြင်း**:
+   - Google မှ Approve ပေးထားသော်လည်း "Ready to publish" အခြေအနေတွင် ရပ်နေတတ်ပါသည်။ Play Console > Publishing overview သို့သွား၍ "Publish changes" ကို နှိပ်ပါ သို့မဟုတ် Managed publishing ကို ပိတ်ပါ။
+4. **App Content Declarations မပြည့်စုံခြင်း**:
+   - Policy > App Content ရှိ မေးခွန်းများအားလုံး Green Checkmark ဖြစ်အောင် ဖြေဆိုရပါမည်။
+5. **Main Store Listing ပုံများ မပြည့်စုံခြင်း**:
+   - 512x512 App Icon, 1024x500 Feature Graphic, အနည်းဆုံး Phone Screenshots ၂ ပုံ တင်ပေးရပါမည်။
+6. **Developer Identity Verification မပြီးသေးခြင်း**:
+   - Developer Account စာမျက်နှာတွင် နိုင်ငံသားမှတ်ပုံတင်/Passport နှင့် လိပ်စာ Verification ပြုလုပ်ပေးရပါမည်။
+7. **Policy Rejection မေးလ် ရောက်ရှိနေခြင်း**:
+   - Gmail Inbox/Spam တွင် "Issue found: ..." ခေါင်းစဉ်ဖြင့် Google Play မှ မေးလ် ပို့ထားခြင်း ရှိ/မရှိ စစ်ဆေးပါ။
 
 </details>
 
@@ -216,23 +244,32 @@ npm run build
 
 #### 3. Building Android APK & Play Store AAB Bundle
 ```bash
-# Synchronize web assets to Capacitor Android project
-npx cap sync android
+# Automated Single-command Build Script
+./scripts/build-android.sh
 
-# Navigate to the Android project directory
+# Or step-by-step:
+npm run build
+npx cap sync android
 cd android
 
-# Build Debug APK
+# Build FOSS / Debug / Sideload APK
 ./gradlew assembleDebug
 
 # Build Production AAB (Android App Bundle) for Google Play Console
 ./gradlew bundleRelease
 ```
 Build Output Locations:
-- Debug APK: `android/app/build/outputs/apk/debug/app-debug.apk`
+- Debug / FOSS APK: `android/app/build/outputs/apk/debug/app-debug.apk`
 - Release AAB: `android/app/build/outputs/bundle/release/app-release.aab`
 
-#### 4. Automated CI/CD (GitHub Actions)
+#### 4. F-Droid FOSS Compliance & Removed Google Features
+In compliance with F-Droid's strict Free and Open Source Software (FOSS) and Anti-Features policies:
+- **Removed Google Play Services Gradle Plugin:** Completely removed `com.google.gms:google-services` from `android/build.gradle` and `android/app/build.gradle`. (Zero `NonFreeDep` issues).
+- **Removed Google Fonts CDN Tracking:** Removed remote Google Fonts CDN queries (`fonts.googleapis.com`) from `index.html`. Uses locally bundled `@fontsource/dseg7-classic` and system monospace/sans fonts. (Zero `NonFreeNet` issues).
+- **Zero Proprietary SDKs:** No Firebase, no AdMob, no Google tracking or analytics.
+- **F-Droid Metadata Recipe:** Provided at `metadata/com.victorgeek.colabterminal.yml` for inclusion in the official `fdroiddata` repository.
+
+#### 5. Automated CI/CD (GitHub Actions)
 The repository includes `.github/workflows/build-apk.yml`. Pushing to your repository or releasing a tag triggers an automated build that generates both the APK and Google Play AAB bundle as downloadable artifacts.
 
 ---
@@ -252,6 +289,25 @@ When completing the **App Content** declarations in the Google Play Console, use
    - Do you provide a way for users to request data deletion? -> **Yes** (Via the in-app "WIPE" button).
 7. **Government Apps:** Select *"No"*.
 8. **Financial Features:** Select *"No financial features"*.
+
+---
+
+### 🚨 Top 7 Reasons Why Apps Do Not Publish on Google Play Console
+
+1. **New Personal Account "20 Testers for 14 Days" Requirement (Most Common)**:
+   - Personal developer accounts created after November 13, 2023 cannot release directly to Production. You must set up a Closed Test track with at least 20 opted-in testers for 14 consecutive days before the "Apply for production" button unlocks on your Console Dashboard.
+2. **App is "In Review"**:
+   - Initial review for new accounts and apps takes 3 to 7 working days (sometimes up to 14 days). Avoid pushing new updates while "In review" as each push resets the review queue.
+3. **"Managed Publishing" is Turned On**:
+   - Google may have approved your app, but it is waiting in "Ready to publish" status. Visit Publishing Overview and click "Publish changes" or turn Managed Publishing off.
+4. **Incomplete App Content Declarations**:
+   - All questionnaires in Policy > App Content must display green checkmarks. A single missing section blocks rollout.
+5. **Missing Main Store Listing Assets**:
+   - A 512x512 PNG app icon, 1024x500 feature graphic, and at least 2 phone screenshots are strictly required.
+6. **Pending Developer Identity Verification**:
+   - Check Developer Account settings to ensure Government ID / Passport and address proof verification have been approved by Google.
+7. **Policy Rejection Notice via Email**:
+   - Check your developer inbox (`xhackcoder@gmail.com`) for emails titled "Issue found on app submission: ..." and address the specific issue cited.
 
 ---
 

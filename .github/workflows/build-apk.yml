@@ -69,6 +69,15 @@ jobs:
       - name: 📤 Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Colab-Android-Terminal-PlayStore-Build
+          name: Colab-Android-Terminal-Builds
           path: build-output/*
           retention-days: 30
+
+      - name: 🏷️ Publish GitHub Release (on tag v*)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build-output/*
+          draft: false
+          prerelease: false
+          generate_release_notes: true

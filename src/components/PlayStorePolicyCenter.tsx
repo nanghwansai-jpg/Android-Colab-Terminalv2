@@ -31,7 +31,7 @@ export const PlayStorePolicyCenter: React.FC<PlayStorePolicyCenterProps> = ({
   reviewerMode,
   onToggleReviewerMode,
 }) => {
-  const [activeSubTab, setActiveSubTab] = useState<'audit' | 'console_guide' | 'listing' | 'reviewer'>('audit');
+  const [activeSubTab, setActiveSubTab] = useState<'audit' | 'console_guide' | 'listing' | 'reviewer' | 'troubleshoot' | 'fdroid'>('troubleshoot');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   const triggerSound = (type: 'click' | 'start' | 'alert' | 'success' = 'click') => {
@@ -221,61 +221,236 @@ This application is an independent developer utility and is NOT affiliated with,
         </p>
 
         {/* Sub Navigation */}
-        <div className="grid grid-cols-4 gap-1 pt-1 font-mono font-bold text-[11px]">
+        <div className="grid grid-cols-6 gap-1 pt-1 font-mono font-bold text-[9px] sm:text-[10px]">
+          <button
+            onClick={() => {
+              triggerSound('click');
+              setActiveSubTab('troubleshoot');
+            }}
+            className={`py-1.5 px-0.5 rounded text-center cursor-pointer transition-all ${
+              activeSubTab === 'troubleshoot'
+                ? 'bg-rose-500 text-black font-black shadow-[0_0_10px_rgba(244,63,94,0.8)]'
+                : 'bg-black text-slate-300 hover:text-white border border-slate-800'
+            }`}
+          >
+            FIX PUBLISH
+          </button>
           <button
             onClick={() => {
               triggerSound('click');
               setActiveSubTab('audit');
             }}
-            className={`py-1.5 px-2 rounded text-center cursor-pointer transition-all ${
+            className={`py-1.5 px-0.5 rounded text-center cursor-pointer transition-all ${
               activeSubTab === 'audit'
                 ? 'bg-[#00ff66] text-black font-black shadow-[0_0_10px_rgba(0,255,102,0.6)]'
                 : 'bg-black text-slate-300 hover:text-white border border-slate-800'
             }`}
           >
-            1. POLICY AUDIT
+            1. AUDIT
           </button>
           <button
             onClick={() => {
               triggerSound('click');
               setActiveSubTab('console_guide');
             }}
-            className={`py-1.5 px-2 rounded text-center cursor-pointer transition-all ${
+            className={`py-1.5 px-0.5 rounded text-center cursor-pointer transition-all ${
               activeSubTab === 'console_guide'
                 ? 'bg-cyan-400 text-black font-black shadow-[0_0_10px_rgba(0,240,255,0.6)]'
                 : 'bg-black text-slate-300 hover:text-white border border-slate-800'
             }`}
           >
-            2. PLAY CONSOLE QA
+            2. PLAY QA
           </button>
           <button
             onClick={() => {
               triggerSound('click');
               setActiveSubTab('listing');
             }}
-            className={`py-1.5 px-2 rounded text-center cursor-pointer transition-all ${
+            className={`py-1.5 px-0.5 rounded text-center cursor-pointer transition-all ${
               activeSubTab === 'listing'
                 ? 'bg-amber-400 text-black font-black shadow-[0_0_10px_rgba(255,183,3,0.6)]'
                 : 'bg-black text-slate-300 hover:text-white border border-slate-800'
             }`}
           >
-            3. STORE LISTING
+            3. LISTING
           </button>
           <button
             onClick={() => {
               triggerSound('click');
               setActiveSubTab('reviewer');
             }}
-            className={`py-1.5 px-2 rounded text-center cursor-pointer transition-all ${
+            className={`py-1.5 px-0.5 rounded text-center cursor-pointer transition-all ${
               activeSubTab === 'reviewer'
                 ? 'bg-purple-400 text-black font-black shadow-[0_0_10px_rgba(192,132,252,0.6)]'
                 : 'bg-black text-slate-300 hover:text-white border border-slate-800'
             }`}
           >
-            4. REVIEWER SANDBOX
+            4. SANDBOX
+          </button>
+          <button
+            onClick={() => {
+              triggerSound('click');
+              setActiveSubTab('fdroid');
+            }}
+            className={`py-1.5 px-0.5 rounded text-center cursor-pointer transition-all ${
+              activeSubTab === 'fdroid'
+                ? 'bg-blue-400 text-black font-black shadow-[0_0_10px_rgba(96,165,250,0.6)]'
+                : 'bg-black text-slate-300 hover:text-white border border-slate-800'
+            }`}
+          >
+            5. F-DROID
           </button>
         </div>
       </div>
+
+      {/* SUB-TAB 0: PUBLISH TROUBLESHOOTER & DIAGNOSTICS */}
+      {activeSubTab === 'troubleshoot' && (
+        <div className="space-y-2.5">
+          <div className="p-2.5 rounded bg-rose-950/60 border border-rose-500/60 text-rose-200 text-xs">
+            <strong className="text-white block font-black mb-1">
+              {lang === 'my'
+                ? '⚠️ Play Console တွင် Publish မထွက်ရသည့် အကြောင်းရင်း (၇) ချက်နှင့် စစ်ဆေးဖြေရှင်းနည်းများ'
+                : '⚠️ Top 7 Reasons Why Apps Do Not Publish on Play Console & Step-by-Step Fixes'}
+            </strong>
+            {lang === 'my'
+              ? 'အောက်ပါအချက် ၇ ချက်ထဲမှ သင်၏ Play Console Dashboard ပေါ်တွင် မည်သည့်အချက်နှင့် ကိုက်ညီနေသည်ကို စစ်ဆေး၍ ချက်ချင်း ဖြေရှင်းနိုင်ပါသည်:'
+              : 'Review your Google Play Console dashboard against these 7 diagnostic checks to unblock publishing:'}
+          </div>
+
+          <div className="space-y-2">
+            {/* 1. 20 Testers / 14 Days */}
+            <div className="terminal-panel p-3 rounded-lg border border-slate-800 space-y-1.5">
+              <div className="flex items-center justify-between text-xs font-bold text-white">
+                <span className="text-amber-400">
+                  ၁။ ၂၀၂၃ နောက်ပိုင်း Personal Account ဖြစ်နေပါသလား? (20 Testers for 14 Days)
+                </span>
+                <span className="px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-500 text-[10px] font-mono">
+                  အဓိက အကျဆုံး
+                </span>
+              </div>
+              <p className="text-slate-300 text-[11px] leading-relaxed">
+                {lang === 'my'
+                  ? '၂၀၂၃ ခုနှစ် နိုဝင်ဘာလနောက်ပိုင်း ဖွင့်ထားသော Personal Account အားလုံးသည် တိုက်ရိုက် Production မတင်နိုင်ပါ။ Closed Testing (ပိတ်ထားသော စမ်းသပ်မှု) တွင် Tester ၂၀ ဦးဖြင့် အနည်းဆုံး ၁၄ ရက် အပြည့် Opt-in စမ်းသပ်ပြီးမှသာ Play Console Dashboard တွင် "Apply for production" ခလုတ် ပေါ်လာမည် ဖြစ်ပါသည်။'
+                  : 'Since November 2023, Google requires all personal developer accounts to run a Closed Test with at least 20 opted-in testers for 14 continuous days before applying for Production rollout.'}
+              </p>
+              <div className="bg-black p-2 rounded border border-slate-800 text-[11px] text-cyan-300 font-mono font-bold">
+                💡 ဖြေရှင်းနည်း: Play Console → Testing → Closed testing သို့ သွားပြီး Tester ၂၀ ဦး ထည့်သွင်းပါ။ ၁၄ ရက် ပြည့်ပါက Dashboard ပေါ်ရှိ "Apply for production" ကို နှိပ်၍ Questionnaire ဖြေဆိုပါ။
+              </div>
+            </div>
+
+            {/* 2. In Review timeframe */}
+            <div className="terminal-panel p-3 rounded-lg border border-slate-800 space-y-1.5">
+              <div className="flex items-center justify-between text-xs font-bold text-white">
+                <span className="text-[#00ff66]">
+                  ၂။ Status တွင် "In review" (စစ်ဆေးဆဲ) ဟု ပြနေပါသလား?
+                </span>
+                <span className="px-1.5 py-0.5 rounded bg-emerald-950 text-[#00ff66] border border-[#00ff66]/50 text-[10px] font-mono">
+                  ရုံးဖွင့်ရက် ၃-၇ ရက်
+                </span>
+              </div>
+              <p className="text-slate-300 text-[11px] leading-relaxed">
+                {lang === 'my'
+                  ? 'ပထမဆုံးအကြိမ် တင်သည့် အက်ပ်များသည် Google ၏ Human Reviewers များမှ အသေးစိတ် စစ်ဆေးသောကြောင့် ပုံမှန်အားဖြင့် ရုံးဖွင့်ရက် ၃ ရက်မှ ၇ ရက် (တစ်ခါတစ်ရံ ၁၄ ရက်အထိ) ကြာမြင့်တတ်ပါသည်။'
+                  : 'First-time app submissions from new developer accounts typically take 3 to 7 business days for Google Play review.'}
+              </p>
+              <div className="bg-black p-2 rounded border border-slate-800 text-[11px] text-amber-300 font-mono font-bold">
+                ⚠️ သတိပြုရန်: "In review" ဖြစ်နေစဉ် အက်ပ်အသစ် ထပ်မတင်ပါနှင့်၊ Update ထပ်တင်ပါက Review Queue ပြန်စသွား၍ ပိုကြာသွားပါမည်။
+              </div>
+            </div>
+
+            {/* 3. Managed Publishing */}
+            <div className="terminal-panel p-3 rounded-lg border border-slate-800 space-y-1.5">
+              <div className="flex items-center justify-between text-xs font-bold text-white">
+                <span className="text-cyan-400">
+                  ၃။ "Managed Publishing" ဖွင့်ထားမိပါသလား? (Ready to publish)
+                </span>
+                <span className="px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500 text-[10px] font-mono">
+                  ACTION NEEDED
+                </span>
+              </div>
+              <p className="text-slate-300 text-[11px] leading-relaxed">
+                {lang === 'my'
+                  ? 'Managed Publishing ဖွင့်ထားပါက Google မှ အက်ပ်ကို အတည်ပြုပြီးသော်လည်း Store ပေါ်သို့ အလိုအလျောက် မရောက်ပါ။ "Ready to publish" ဟု ပြနေပါမည်။'
+                  : 'If Managed Publishing is turned on, approved releases do not go live automatically until you manually click "Publish changes".'}
+              </p>
+              <div className="bg-black p-2 rounded border border-slate-800 text-[11px] text-[#00ff66] font-mono font-bold">
+                💡 ဖြေရှင်းနည်း: Play Console → Publishing overview သို့ သွားပြီး ညာဘက်အပေါ်ရှိ "Publish changes" ခလုတ်ကို နှိပ်ပါ (သို့မဟုတ် Managed Publishing ကို "Turn off" ပြုလုပ်ပါ)။
+              </div>
+            </div>
+
+            {/* 4. Incomplete App Content */}
+            <div className="terminal-panel p-3 rounded-lg border border-slate-800 space-y-1.5">
+              <div className="flex items-center justify-between text-xs font-bold text-white">
+                <span className="text-rose-400">
+                  ၄။ "App Content" (မူဝါဒ မေးခွန်းများ) အားလုံး မပြည့်စုံသေးပါသလား?
+                </span>
+                <span className="px-1.5 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-500 text-[10px] font-mono">
+                  BLOCKING
+                </span>
+              </div>
+              <p className="text-slate-300 text-[11px] leading-relaxed">
+                {lang === 'my'
+                  ? 'Play Console → Policy → App Content ရှိ မေးခွန်းများ (Privacy Policy, Data Safety, Content Rating, Target Audience, Ads စသည်) ထဲမှ တစ်ခုခု "Need attention" သို့မဟုတ် မဖြည့်ရသေးပါက Rollout ခလုတ် မှိန်နေပါမည် (Disabled)။'
+                  : 'All declarations under Policy → App Content must be completed with green checks. A single incomplete declaration prevents rolling out.'}
+              </p>
+              <div className="bg-black p-2 rounded border border-slate-800 text-[11px] text-cyan-300 font-mono font-bold">
+                💡 ဖြေရှင်းနည်း: ဤအက်ပ်၏ "2. PLAY QA" tab သို့ သွားပြီး မေးခွန်းတစ်ခုချင်းစီအတွက် အသင့်ဖြေဆိုရမည့် အဖြေများကို ကူးယူဖြည့်သွင်းပါ။
+              </div>
+            </div>
+
+            {/* 5. Missing Store Listing Assets */}
+            <div className="terminal-panel p-3 rounded-lg border border-slate-800 space-y-1.5">
+              <div className="flex items-center justify-between text-xs font-bold text-white">
+                <span className="text-purple-400">
+                  ၅။ Store Listing ပုံများ (Icon, Banner, Screenshots) မပြည့်စုံသေးပါသလား?
+                </span>
+                <span className="px-1.5 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-500 text-[10px] font-mono">
+                  ASSETS
+                </span>
+              </div>
+              <p className="text-slate-300 text-[11px] leading-relaxed">
+                {lang === 'my'
+                  ? 'Main store listing တွင် 512x512 App Icon၊ 1024x500 Feature Graphic Banner နှင့် အနည်းဆုံး ဖုန်း Screenshot ၂ ပုံ မတင်ရသေးပါက Release တင်၍ မရပါ။'
+                  : 'Play Store requires 512x512 app icon, 1024x500 feature graphic, and at least 2 phone screenshots.'}
+              </p>
+            </div>
+
+            {/* 6. Identity Verification */}
+            <div className="terminal-panel p-3 rounded-lg border border-slate-800 space-y-1.5">
+              <div className="flex items-center justify-between text-xs font-bold text-white">
+                <span className="text-yellow-400">
+                  ၆။ Developer Account Identity Verification မပြီးသေးပါသလား?
+                </span>
+                <span className="px-1.5 py-0.5 rounded bg-yellow-950 text-yellow-300 border border-yellow-500 text-[10px] font-mono">
+                  ID CHECK
+                </span>
+              </div>
+              <p className="text-slate-300 text-[11px] leading-relaxed">
+                {lang === 'my'
+                  ? 'Developer Account တွင် နိုင်ငံသားမှတ်ပုံတင် / Passport နှင့် လိပ်စာအထောက်အထား (Bank/Utility) verification မပြီးသေးပါက Google က အက်ပ်အားလုံးကို review ပိတ်ထားပါမည်။'
+                  : 'Make sure your developer account identity verification is verified with Google Payments/Console.'}
+              </p>
+            </div>
+
+            {/* 7. Rejection Check via Email */}
+            <div className="terminal-panel p-3 rounded-lg border border-slate-800 space-y-1.5">
+              <div className="flex items-center justify-between text-xs font-bold text-white">
+                <span className="text-red-400">
+                  ၇။ Google Play မှ Reject မေးလ် ရောက်ရှိနေပါသလား?
+                </span>
+                <span className="px-1.5 py-0.5 rounded bg-red-950 text-red-300 border border-red-500 text-[10px] font-mono">
+                  EMAIL CHECK
+                </span>
+              </div>
+              <p className="text-slate-300 text-[11px] leading-relaxed">
+                {lang === 'my'
+                  ? 'Developer Gmail (xhackcoder@gmail.com) ၏ Inbox/Spam တွင် "Issue found on app submission" သို့မဟုတ် "Action required" ဟူသော ခေါင်းစဉ်ဖြင့် မေးလ် ရောက်ရှိနေပါက ၎င်းမေးလ်တွင် Reject ဖြစ်သည့် အကြောင်းရင်းတိတိကျကျ ပါရှိပါသည်။'
+                  : 'Check your developer Gmail for messages titled "Issue found: ...". Google will provide the exact reason if an issue was detected.'}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* SUB-TAB 1: POLICY AUDIT (10 CHECKS) */}
       {activeSubTab === 'audit' && (
@@ -462,6 +637,119 @@ This application is an independent developer utility and is NOT affiliated with,
             >
               {copiedKey === 'reviewer_inst' ? '[COPIED TO CLIPBOARD ✓]' : '[COPY REVIEWER NOTE]'}
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* SUB-TAB 5: F-DROID FOSS & ANTI-FEATURES COMPLIANCE */}
+      {activeSubTab === 'fdroid' && (
+        <div className="space-y-2.5">
+          <div className="p-2.5 rounded bg-blue-950/60 border border-blue-500/60 text-blue-200 text-xs">
+            <strong className="text-white block font-black mb-1">
+              {lang === 'my'
+                ? '📦 F-Droid အတွက် Google Feature များနှင့် Non-Free Anti-Features များ ဖယ်ရှားပြီးစီးမှု'
+                : '📦 F-Droid FOSS Compliance: Proprietary Google Features & Anti-Features Removed'}
+            </strong>
+            {lang === 'my'
+              ? 'F-Droid သည် 100% Pure Open-Source (FOSS) အက်ပ်များကိုသာ လက်ခံပြီး Proprietary Google Services/Tracking များကို တင်းကြပ်စွာ တားမြစ်ပါသည်။ ဤပရောဂျက်တွင် F-Droid Anti-Features အားလုံးကို အောင်မြင်စွာ ဖယ်ရှားပြင်ဆင်ထားပါသည်:'
+              : 'F-Droid requires 100% Free and Open Source Software (FOSS) with zero proprietary Google libraries or tracking. All Anti-Features have been cleaned:'}
+          </div>
+
+          <div className="space-y-2">
+            {/* Cleaned Features */}
+            <div className="terminal-panel p-3 rounded-lg border border-slate-800 space-y-2">
+              <span className="text-[#00ff66] font-bold text-xs block">
+                {lang === 'my' ? '✓ ဖယ်ရှားပြင်ဆင်ပြီးသော Google & Proprietary အချက်များ:' : '✓ Removed Google & Non-Free Features:'}
+              </span>
+              <ul className="text-slate-300 text-[11px] space-y-1.5 pl-3 list-disc">
+                <li>
+                  <strong className="text-white">Removed Google Play Services Gradle Plugin:</strong> `android/build.gradle` နှင့် `android/app/build.gradle` မှ `com.google.gms:google-services` အားလုံးကို လုံးဝ ဖယ်ရှားပြီးဖြစ်၍ F-Droid `NonFreeDep` အငြိမရှိပါ။
+                </li>
+                <li>
+                  <strong className="text-white">Removed Google Fonts CDN Tracking:</strong> `index.html` မှ Google Fonts CDN (`fonts.googleapis.com`) အားလုံးကို ဖယ်ရှားပြီး Local `@fontsource/dseg7-classic` နှင့် System Monospace Font များကိုသာ အသုံးပြုထား၍ F-Droid `NonFreeNet` အငြိမရှိပါ။
+                </li>
+                <li>
+                  <strong className="text-white">Zero Tracking & Analytics:</strong> Firebase Analytics, AdMob, Crashlytics စသည့် Google Telemetry များ လုံးဝ မပါဝင်ပါ။
+                </li>
+                <li>
+                  <strong className="text-white">100% Client-Side AES-256-GCM:</strong> Cloud ဆာဗာ မလိုဘဲ အသုံးပြုသူ စက်ထဲတွင်သာ စာဝှက်စနစ် သုံးထားပါသည်။
+                </li>
+              </ul>
+            </div>
+
+            {/* F-Droid Metadata Recipe */}
+            <div className="terminal-panel p-3 rounded-lg border border-slate-800 space-y-2">
+              <div className="flex items-center justify-between text-xs font-bold text-white">
+                <span className="text-blue-300">F-DROID METADATA RECIPE (YAML):</span>
+                <button
+                  onClick={() =>
+                    copyText(
+                      `Categories:
+  - Development
+  - System
+License: Apache-2.0
+AuthorName: Victor Geek
+AuthorEmail: xhackcoder@gmail.com
+SourceCode: https://github.com/xhackcoder/colab-android-terminal
+IssueTracker: https://github.com/xhackcoder/colab-android-terminal/issues
+CurrentVersion: 2.6.0
+CurrentVersionCode: 1
+RepoType: git
+Repo: https://github.com/xhackcoder/colab-android-terminal.git
+Builds:
+  - versionName: 2.6.0
+    versionCode: 1
+    commit: v2.6.0
+    subdir: android/app
+    gradle:
+      - yes
+    prebuild:
+      - npm install
+      - npm run build
+      - npx cap sync android`,
+                      'fdroid_yaml'
+                    )
+                  }
+                  className="text-cyan-300 underline cursor-pointer hover:text-white flex items-center gap-1 text-[11px]"
+                >
+                  {copiedKey === 'fdroid_yaml' ? '[COPIED ✓]' : '[COPY RECIPE]'}
+                </button>
+              </div>
+              <p className="text-[10px] text-slate-400">
+                F-Droid Build Server (fdroiddata) သို့ တင်သွင်းရန် metadata ဖိုင်ကို `metadata/com.victorgeek.colabterminal.yml` တွင် အဆင်သင့် ဖန်တီးထားပါသည်။
+              </p>
+            </div>
+
+            {/* AAB & APK Generation Commands */}
+            <div className="terminal-panel p-3 rounded-lg border border-slate-800 space-y-2">
+              <div className="flex items-center justify-between text-xs font-bold text-white">
+                <span className="text-amber-300">AAB & APK GENERATION COMMANDS:</span>
+                <button
+                  onClick={() =>
+                    copyText(
+                      'npm run build && npx cap sync android && cd android && ./gradlew assembleDebug && ./gradlew bundleRelease',
+                      'build_cmds'
+                    )
+                  }
+                  className="text-[#00ff66] underline cursor-pointer hover:text-white flex items-center gap-1 text-[11px]"
+                >
+                  {copiedKey === 'build_cmds' ? '[COPIED ✓]' : '[COPY BUILD SCRIPT]'}
+                </button>
+              </div>
+              <pre className="bg-black p-2 rounded border border-slate-700 text-cyan-300 font-mono text-[10px] whitespace-pre-wrap">
+{`# 1. Build Web Assets
+npm run build
+
+# 2. Sync to Android Platform
+npx cap sync android
+
+# 3. Generate APK (F-Droid / Debug / Sideload)
+cd android && ./gradlew assembleDebug
+
+# 4. Generate AAB (Google Play Store Release)
+cd android && ./gradlew bundleRelease`}
+              </pre>
+            </div>
           </div>
         </div>
       )}
