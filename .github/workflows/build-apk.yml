@@ -1,4 +1,4 @@
-name: Build Android APK and AAB for Google Play
+name: Build Android APK and AAB for Google Play & F-Droid
 
 on:
   push:
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   build-android:
-    name: Build Android Package for Google Play Console
+    name: Build Android Package (APK & AAB)
     runs-on: ubuntu-latest
 
     steps:
@@ -26,8 +26,14 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: 📱 Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: 🐘 Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.14.3'
+
+      - name: 📱 Accept Android SDK Licenses
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses 2>/dev/null || true
 
       - name: 🟢 Set up Node.js 20
         uses: actions/setup-node@v4
@@ -38,7 +44,7 @@ jobs:
       - name: 📦 Install NPM Dependencies
         run: npm install
 
-      - name: 🔨 Build Vite Web Application
+      - name: 🔨 Build Web Application
         run: npm run build
 
       - name: 🔄 Sync Capacitor Android Platform
@@ -54,17 +60,33 @@ jobs:
             chmod +x android/gradlew
           fi
 
-      - name: 🚀 Build Android AAB and APK
+      - name: 🚀 Build Android AAB (Play Store) and APK (F-Droid/Debug)
         run: |
           cd android
-          ./gradlew assembleDebug --stacktrace
-          ./gradlew bundleRelease --stacktrace || true
+          if [ -f "./gradlew" ]; then
+            ./gradlew assembleDebug --stacktrace
+            ./gradlew bundleRelease --stacktrace || true
+          else
+            gradle assembleDebug --stacktrace
+            gradle bundleRelease --stacktrace || true
+          fi
 
       - name: 📋 Prepare Artifacts Output
         run: |
           mkdir -p build-output
-          cp android/app/build/outputs/apk/debug/app-debug.apk build-output/Colab-Android-Terminal-v2.6-debug.apk || true
-          find android/app/build/outputs/ -type f \( -name "*.apk" -o -name "*.aab" \) -exec cp {} build-output/ \; || true
+          # Copy APKs
+          find android/app/build/outputs/ -type f -name "*.apk" -exec cp {} build-output/ \; || true
+          # Copy AABs
+          find android/app/build/outputs/ -type f -name "*.aab" -exec cp {} build-output/ \; || true
+          # Normalize filenames if exists
+          if [ -f build-output/app-debug.apk ]; then
+            cp build-output/app-debug.apk build-output/Colab-Android-Terminal-v2.6-debug.apk
+          fi
+          if [ -f build-output/app-release.aab ]; then
+            cp build-output/app-release.aab build-output/Colab-Android-Terminal-v2.6-release.aab
+          fi
+          echo "Generated artifacts in build-output:"
+          ls -la build-output/
 
       - name: 📤 Upload Build Artifacts
         uses: actions/upload-artifact@v4
