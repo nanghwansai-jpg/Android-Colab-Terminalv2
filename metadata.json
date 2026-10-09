@@ -1,0 +1,6 @@
+{
+  "name": "Colab Android Terminal",
+  "description": "High-performance Colab Controller client with real-time stats, 7-segment telemetry, secure storage, and Google Play Store policy compliant tools.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

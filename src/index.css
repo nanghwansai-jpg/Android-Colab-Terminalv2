@@ -1,0 +1,267 @@
+@import "tailwindcss";
+
+@theme {
+  --animate-jelly-jiggle: jelly-jiggle 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --animate-lcd-blink: lcd-blink 0.8s step-start infinite;
+
+  @keyframes jelly-jiggle {
+    0% { transform: scale3d(1, 1, 1); }
+    20% { transform: scale3d(1.12, 0.88, 1); }
+    40% { transform: scale3d(0.9, 1.1, 1); }
+    60% { transform: scale3d(1.05, 0.95, 1); }
+    80% { transform: scale3d(0.98, 1.02, 1); }
+    100% { transform: scale3d(1, 1, 1); }
+  }
+
+  @keyframes lcd-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+}
+
+/* ======================================================== */
+/* CLEAN PITCH BLACK TERMINAL BACKGROUND                   */
+/* ======================================================== */
+
+body {
+  background-color: #000000;
+  color: #f8fafc;
+  font-family: 'Share Tech Mono', monospace;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ======================================================== */
+/* 7-SEGMENT DIGITAL GREEN FONT                            */
+/* ======================================================== */
+
+.font-dseg7 {
+  font-family: 'DSEG7 Classic', monospace;
+  font-style: italic;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.1em;
+}
+
+.font-dseg7-normal {
+  font-family: 'DSEG7 Classic', monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+
+.font-calc-dot {
+  font-family: 'VT323', 'Silkscreen', monospace;
+  letter-spacing: 0.05em;
+}
+
+.font-digital-watch {
+  font-family: 'Orbitron', 'Chakra Petch', monospace;
+  letter-spacing: 0.12em;
+}
+
+.font-terminal {
+  font-family: 'Share Tech Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* VIBRANT GLOWING GREEN DIGIT */
+.glow-green-digit {
+  color: #00ff66 !important;
+  text-shadow: 0 0 4px rgba(0, 255, 102, 0.8), 0 0 8px rgba(0, 255, 102, 0.35);
+}
+
+.glow-cyan {
+  color: #00f0ff !important;
+  text-shadow: 0 0 4px rgba(0, 240, 255, 0.8);
+}
+
+.glow-amber {
+  color: #ffb703 !important;
+  text-shadow: 0 0 4px rgba(255, 183, 3, 0.8);
+}
+
+.glow-rose {
+  color: #ff0055 !important;
+  text-shadow: 0 0 4px rgba(255, 0, 85, 0.8);
+}
+
+/* ======================================================== */
+/* CASIO SCIENTIFIC CALCULATOR LCD SCREEN STYLING          */
+/* ======================================================== */
+
+.calc-lcd-bg {
+  background-color: #6f9791;
+  background-image: radial-gradient(rgba(70, 105, 99, 0.45) 0.75px, transparent 0.75px), linear-gradient(180deg, #82a9a3 0%, #6f9791 55%, #618983 100%);
+  background-size: 3px 3px, 100% 100%;
+  color: #0b1a17;
+  border: 3px solid #1c2e2b;
+  box-shadow: inset 0 3px 12px rgba(0, 0, 0, 0.55), 0 0 25px rgba(0, 255, 102, 0.08);
+}
+
+.calc-lcd-highlight-bar {
+  background-color: #081412 !important;
+  color: #00ff66 !important;
+  border: 1px solid rgba(0, 255, 102, 0.6) !important;
+  box-shadow: 0 0 10px rgba(0, 255, 102, 0.45), inset 0 0 6px rgba(0, 255, 102, 0.2) !important;
+  text-shadow: 0 0 7px rgba(0, 255, 102, 0.9) !important;
+  font-weight: 700 !important;
+}
+
+.font-calc-pixel {
+  font-family: 'Silkscreen', monospace;
+  letter-spacing: 0.04em;
+}
+
+.font-calc-matrix {
+  font-family: 'VT323', monospace;
+  letter-spacing: 0.06em;
+}
+
+.calc-lcd-panel {
+  background: rgba(10, 22, 19, 0.88);
+  border: 1px solid rgba(32, 54, 49, 0.9);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.calc-lcd-ink-text {
+  color: #091715 !important;
+  text-shadow: 0 0 1px rgba(9, 23, 21, 0.4);
+}
+
+.calc-menu-item {
+  font-family: 'Silkscreen', 'VT323', monospace;
+  color: #0c1c19;
+  font-weight: 700;
+  transition: all 0.15s ease;
+}
+
+.calc-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #27403b #5f8680;
+}
+
+.calc-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.calc-scrollbar::-webkit-scrollbar-track {
+  background: #5f8680;
+  border-radius: 2px;
+}
+
+.calc-scrollbar::-webkit-scrollbar-thumb {
+  background: #27403b;
+  border-radius: 2px;
+}
+
+.calc-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #00ff66;
+}
+
+input, textarea {
+  caret-color: #00ff66 !important;
+}
+
+::selection {
+  background-color: #00ff66 !important;
+  color: #000000 !important;
+  text-shadow: none;
+}
+
+::-moz-selection {
+  background-color: #00ff66 !important;
+  color: #000000 !important;
+  text-shadow: none;
+}
+
+/* ======================================================== */
+/* HARDWARE TERMINAL CHASSIS                               */
+/* ======================================================== */
+
+.terminal-chassis {
+  background: #080a0f;
+  border: 2px solid #1e293b;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 255, 102, 0.05);
+}
+
+.terminal-screen-matrix {
+  background-color: #000000;
+  border: 1px solid #1e293b;
+  color: #ffffff;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.terminal-panel {
+  background: #0a0d14;
+  border: 1px solid #1e293b;
+}
+
+.btn-active-green {
+  background: #00ff66 !important;
+  color: #000000 !important;
+  font-weight: 900 !important;
+  box-shadow: 0 0 12px rgba(0, 255, 102, 0.8);
+}
+
+.btn-active-cyan {
+  background: #00f0ff !important;
+  color: #000000 !important;
+  font-weight: 900 !important;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.8);
+}
+
+.btn-active-amber {
+  background: #ffb703 !important;
+  color: #000000 !important;
+  font-weight: 900 !important;
+  box-shadow: 0 0 12px rgba(255, 183, 3, 0.8);
+}
+
+.btn-active-purple {
+  background: #c084fc !important;
+  color: #000000 !important;
+  font-weight: 900 !important;
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.8);
+}
+
+.terminal-key-btn {
+  background: #111622;
+  color: #ffffff;
+  border: 1px solid #273549;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  transition: all 0.1s ease;
+  font-family: 'Share Tech Mono', monospace;
+  font-weight: 700;
+}
+
+.terminal-key-btn:hover {
+  background: #1a2334;
+  border-color: #38bdf8;
+}
+
+.terminal-key-btn:active {
+  transform: translateY(1px);
+}
+
+.scrollbar-matrix {
+  scrollbar-width: thin;
+  scrollbar-color: #334155 #000000;
+}
+
+.scrollbar-matrix::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.scrollbar-matrix::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+.scrollbar-matrix::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+
+.scrollbar-matrix::-webkit-scrollbar-thumb:hover {
+  background: #00ff66;
+}
