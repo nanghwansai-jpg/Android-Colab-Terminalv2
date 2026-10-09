@@ -40,17 +40,19 @@ jobs:
         run: |
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses 2>/dev/null || true
 
-      - name: 🟢 Set up Node.js 20
-        uses: actions/setup-node@v4
+      # 🥟 Node.js အစား Bun ကို ထည့်သွင်းခြင်း
+      - name: 🥟 Set up Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: 20
-          cache: 'npm'
+          bun-version: latest
 
-      - name: 📦 Install NPM Dependencies
-        run: npm install
+      # 📦 Bun ဖြင့် Dependencies များကို တပ်ဆင်ခြင်း
+      - name: 📦 Install Dependencies with Bun
+        run: bun install
 
-      - name: 🔨 Build Web Application
-        run: npm run build
+      # 🔨 Bun ဖြင့် Web App ကို Build လုပ်ခြင်း
+      - name: 🔨 Build Web Application with Bun
+        run: bun run build
 
       - name: 🔄 Sync Capacitor Android Platform
         run: |
